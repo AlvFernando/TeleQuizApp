@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app1/widget/home_button.dart';
-import 'package:quiz_app1/widget/pic_mode_choice.dart';
+import 'package:Telematers_Quiz/widget/home_button.dart';
+import 'package:Telematers_Quiz/widget/pic_mode_choice.dart';
 
 class PictureMode extends StatelessWidget {
   const PictureMode({Key? key}) : super(key: key);

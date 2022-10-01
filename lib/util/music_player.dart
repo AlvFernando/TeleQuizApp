@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:quiz_app1/util/shared_preferences_controller.dart';
+import 'package:Telematers_Quiz/util/shared_preferences_controller.dart';
 
 class MusicPlayer{
   static final player = AudioPlayer();

@@ -1,6 +1,6 @@
 # Quiz App for TELEMATERS
 
-The first TELEMATERS mobile game application with a quiz theme. Give you fun and unique questions. Can you get the highest score in this game?.
+The first TELEMATERS mobile game application with a quiz theme. Give you fun and unique questions. Can you get the highest score in this game?
 
 ## Getting Started
 

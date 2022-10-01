@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app1/util/music_player.dart';
-import 'package:quiz_app1/ui/login_page.dart';
+import 'package:Telematers_Quiz/util/music_player.dart';
+import 'package:Telematers_Quiz/ui/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/background_music_controller.dart';
 

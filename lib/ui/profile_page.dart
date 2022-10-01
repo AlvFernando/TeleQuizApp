@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app1/api/api_service.dart';
-import 'package:quiz_app1/widget/profile_widget.dart';
+import 'package:Telematers_Quiz/api/api_service.dart';
+import 'package:Telematers_Quiz/widget/profile_widget.dart';
 import '../model/profile.dart';
 import '../util/shared_preferences_controller.dart';
 

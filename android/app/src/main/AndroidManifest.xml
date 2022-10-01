@@ -2,7 +2,7 @@
     package="com.example.quiz_app1">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="quiz_app1"
+        android:label="Telemater Quiz"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app1/widget/home_button.dart';
-import 'package:quiz_app1/widget/text_mode_choice.dart';
+import 'package:Telematers_Quiz/widget/home_button.dart';
+import 'package:Telematers_Quiz/widget/text_mode_choice.dart';
 
 class TextMode extends StatelessWidget {
   const TextMode({Key? key}) : super(key: key);

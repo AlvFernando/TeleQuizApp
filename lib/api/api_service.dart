@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:quiz_app1/model/user.dart';
+import 'package:Telematers_Quiz/model/user.dart';
 
 import '../model/profile.dart';
 

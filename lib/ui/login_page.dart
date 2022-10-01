@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app1/api/api_service.dart';
+import 'package:Telematers_Quiz/api/api_service.dart';
 import '../model/user.dart';
 import '../util/shared_preferences_controller.dart';
 import '../widget/custom_purple.dart';

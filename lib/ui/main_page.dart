@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quiz_app1/util/music_player.dart';
-import 'package:quiz_app1/ui/add_question_page.dart';
-import 'package:quiz_app1/ui/profile_page.dart';
-import 'package:quiz_app1/ui/quiz_page.dart';
-import 'package:quiz_app1/ui/setting_page.dart';
-import 'package:quiz_app1/widget/app_button.dart';
-import 'package:quiz_app1/widget/pic_mode.dart';
+import 'package:Telematers_Quiz/util/music_player.dart';
+import 'package:Telematers_Quiz/ui/add_question_page.dart';
+import 'package:Telematers_Quiz/ui/profile_page.dart';
+import 'package:Telematers_Quiz/ui/quiz_page.dart';
+import 'package:Telematers_Quiz/ui/setting_page.dart';
+import 'package:Telematers_Quiz/widget/app_button.dart';
+import 'package:Telematers_Quiz/widget/pic_mode.dart';
 import '../util/background_music_controller.dart';
 import '../util/shared_preferences_controller.dart';
 

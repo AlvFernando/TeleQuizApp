@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app1/widget/home_button.dart';
+import 'package:Telematers_Quiz/widget/home_button.dart';
 
 class ScorePage extends StatelessWidget {
   const ScorePage({Key? key}) : super(key: key);
