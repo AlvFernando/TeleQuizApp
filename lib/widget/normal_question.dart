@@ -1,5 +1,9 @@
+import 'package:Telematers_Quiz/model/question_response.dart';
+import 'package:Telematers_Quiz/util/shared_preferences_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/option.dart';
+import 'package:get/get.dart';
+import 'package:Telematers_Quiz/api/api_service.dart';
 
 class NormalQuestion extends StatefulWidget {
   const NormalQuestion({Key? key}) : super(key: key);
@@ -17,6 +21,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
   //only one box can be checked as true answer
   //*
   final List <bool> _isChecked = [false,false,false,false];
+  //flag for change check box color, if the user not check any
+  bool _isUncheckedAll = false;
 
   //question & answer controller for save the text value
   late TextEditingController _questionController;
@@ -24,6 +30,12 @@ class _NormalQuestionState extends State<NormalQuestion> {
   late TextEditingController _optionBController;
   late TextEditingController _optionCController;
   late TextEditingController _optionDController;
+
+  //controller to get username data
+  SharedPreferencesController spController = Get.find();
+  late final String username;
+
+  Future<QuestionResponse>? _futureQuestionResponse;
 
   @override
   void initState() {
@@ -92,14 +104,33 @@ class _NormalQuestionState extends State<NormalQuestion> {
   //_isChecked must be have a true value
   //must be return true
   bool _validationCheckbox(){
+    //to check if the user not check any correct answer box
+    setState(() {
+      _isUncheckedAll = !_isChecked.contains(true);
+    });
+
     //*
     //if _isChecked did not contain true value, then there is no an option
     //assigned as a correct value
     //return :
     //true = valid (can go to next process)
-    //false = invalid (cannot go to nect process)
+    //false = invalid (cannot go to next process)
     //*
     return _isChecked.contains(true);
+  }
+
+  FutureBuilder<QuestionResponse> buildFutureBuilder(){
+    return FutureBuilder<QuestionResponse>(
+        future: _futureQuestionResponse,
+        builder: (context, snapshot){
+          if(snapshot.hasData){
+            return const Text('success');
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const CircularProgressIndicator();
+        }
+    );
   }
 
   @override
@@ -136,7 +167,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
             _updateCorrectAnswer(0);
           },
           title: 'Option A',
-          errorValue: _isInvalid[1],
+          isEmpty: _isInvalid[1],
+          isUncheckedAll: _isUncheckedAll,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -146,7 +178,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
             _updateCorrectAnswer(1);
           },
           title: 'Option B',
-          errorValue: _isInvalid[2],
+          isEmpty: _isInvalid[2],
+          isUncheckedAll: _isUncheckedAll,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -156,7 +189,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
             _updateCorrectAnswer(2);
           },
           title: 'Option C',
-          errorValue: _isInvalid[3],
+          isEmpty: _isInvalid[3],
+          isUncheckedAll: _isUncheckedAll,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -166,7 +200,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
             _updateCorrectAnswer(3);
           },
           title: 'Option D',
-          errorValue: _isInvalid[4],
+          isEmpty: _isInvalid[4],
+          isUncheckedAll: _isUncheckedAll,
         ),
         const SizedBox(height: 15),
         const Padding(
@@ -180,7 +215,19 @@ class _NormalQuestionState extends State<NormalQuestion> {
         ElevatedButton(
             onPressed: () {
               if(_validationField()==false&&_validationCheckbox()==true){
-                print("go to next process");
+                setState(() {
+                  username = spController.username!;
+                  _futureQuestionResponse = ApiService().createQuestion(
+                    username,
+                    _questionController.text,
+                    _optionAController.text,
+                    _optionBController.text,
+                    _optionCController.text,
+                    _optionDController.text,
+                    _isChecked.indexOf(true),
+                    1,
+                  );
+                });
               }
             },
             child: const Text("ADD QUESTION")

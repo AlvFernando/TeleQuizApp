@@ -5,7 +5,8 @@ class Option extends StatelessWidget {
   final bool value;
   final void Function() onTap;
   final String title;
-  final bool errorValue;
+  final bool isEmpty;
+  final bool isUncheckedAll;
 
   const Option({
     Key? key,
@@ -13,7 +14,8 @@ class Option extends StatelessWidget {
     required this.value,
     required this.onTap,
     required this.title,
-    required this.errorValue,
+    required this.isEmpty,
+    required this.isUncheckedAll,
   }) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class Option extends StatelessWidget {
             controller: optionController,
             decoration: InputDecoration(
               hintText: title,
-              errorText: errorValue ? "Please input $title field!" : null,
+              errorText: isEmpty ? "Please input $title field!" : null,
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
@@ -40,8 +42,9 @@ class Option extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: value==true
-              ? const Icon(Icons.check_box_rounded)
-              : const Icon(Icons.check_box_outline_blank_rounded),
+              ? const Icon(Icons.check_box_rounded,color: Colors.green,)
+              : Icon(Icons.check_box_outline_blank_rounded,
+            color: isUncheckedAll ? Colors.red : null,),
         )
       ],
     );

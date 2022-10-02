@@ -22,7 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
     // TODO: implement initState
     super.initState();
     username = spController.username;
-    _futureProfile = ApiService().profile(username!);
+    //type casting to prevent error
+    _futureProfile = ApiService().profile(username!) as Future<Profile>;
   }
 
   FutureBuilder<Profile> buildFutureBuilder(){

@@ -132,8 +132,9 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
                 onPressed: () {
                   setState(() {
+                    //type casting to prevent error
                     _futureUser = ApiService().loginUser(
-                        _usernameController.text, _passwordController.text);
+                        _usernameController.text, _passwordController.text) as Future<User>?;
                   });
                 },
                 child: const Text("LOGIN")),
