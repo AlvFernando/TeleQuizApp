@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:Telematers_Quiz/model/question_response.dart';
+import 'package:Telematers_Quiz/model/add_question_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:Telematers_Quiz/model/user.dart';
@@ -55,7 +55,7 @@ class ApiService{
   }
 
   //send quiz question data
-  Future <QuestionResponse>createQuestion(String username,String question,
+  Future <AddQuestionResponse>createQuestion(String username,String question,
       String optionA, String optionB,String optionC,String optionD,
       int correctOption, int questionType, [String? assetPath]) async{
     List<String> options = [optionA,optionB,optionC,optionD];
@@ -65,6 +65,7 @@ class ApiService{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
+        'key' : _apiKey!,
         'username' : username,
         'question' : question,
         'options' : options,
@@ -75,9 +76,9 @@ class ApiService{
     );
 
     if(response.statusCode == 201){
-      return QuestionResponse.fromJson(jsonDecode(response.body));
+      return AddQuestionResponse.fromJson(jsonDecode(response.body));
     }else{
-      throw Exception('Failed to send quiz question data.');
+      throw Exception('Failed to send quiz question data. ${response.statusCode}');
     }
   }
 }

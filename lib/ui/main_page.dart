@@ -7,8 +7,10 @@ import 'package:Telematers_Quiz/ui/quiz_page.dart';
 import 'package:Telematers_Quiz/ui/setting_page.dart';
 import 'package:Telematers_Quiz/widget/app_button.dart';
 import 'package:Telematers_Quiz/widget/pic_mode.dart';
+import '../util/add_quiz_validation_controller.dart';
 import '../util/background_music_controller.dart';
 import '../util/shared_preferences_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -21,16 +23,31 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final musicPlayer = MusicPlayer();
   SharedPreferencesController spController = Get.find();
   BackgroundMusicController bmController = Get.find();
+  AddQuizValidationController validationController = Get.find();
   late final String username;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    musicPlayer.init();
+    (bmController.bgSwitch==true) ? musicPlayer.init() : null;
     setState(() {
       username = spController.username!;
     });
+
+    //toast message will show if user succeed add the question
+    if(validationController.isSucceed){
+      Fluttertoast.showToast(
+          msg: "Success Add Question",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+      validationController.isSucceed = false;
+    }
   }
 
   @override

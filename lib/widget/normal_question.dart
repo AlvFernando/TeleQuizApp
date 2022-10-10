@@ -1,9 +1,11 @@
-import 'package:Telematers_Quiz/model/question_response.dart';
+import 'package:Telematers_Quiz/model/add_question_response.dart';
 import 'package:Telematers_Quiz/util/shared_preferences_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/option.dart';
 import 'package:get/get.dart';
 import 'package:Telematers_Quiz/api/api_service.dart';
+import '../ui/main_page.dart';
+import '../util/add_quiz_validation_controller.dart';
 
 class NormalQuestion extends StatefulWidget {
   const NormalQuestion({Key? key}) : super(key: key);
@@ -15,6 +17,13 @@ class NormalQuestion extends StatefulWidget {
 class _NormalQuestionState extends State<NormalQuestion> {
   //validation variable
   final List <bool> _isInvalid = [false,false,false,false,false];
+
+  //variable to store errorMessage
+  // String questionMessage='';
+  // String optionAMessage='';
+  // String optionBMessage='';
+  // String optionCMessage='';
+  // String optionDMessage='';
 
   //array of value for the checkbox
   //*
@@ -31,11 +40,14 @@ class _NormalQuestionState extends State<NormalQuestion> {
   late TextEditingController _optionCController;
   late TextEditingController _optionDController;
 
+  //controller to store validation message
+  AddQuizValidationController validationController = Get.find();
+
   //controller to get username data
   SharedPreferencesController spController = Get.find();
   late final String username;
 
-  Future<QuestionResponse>? _futureQuestionResponse;
+  Future<AddQuestionResponse>? _futureQuestionResponse;
 
   @override
   void initState() {
@@ -46,6 +58,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
     _optionBController = TextEditingController();
     _optionCController = TextEditingController();
     _optionDController = TextEditingController();
+
+    username = spController.username!;
   }
 
   @override
@@ -76,15 +90,56 @@ class _NormalQuestionState extends State<NormalQuestion> {
     List <bool> isInvalid = [false,false,false,false,false];
 
     //question field
-    _questionController.text.isEmpty ? isInvalid[0] = true : null;
+    _questionController.text.isEmpty
+        ? {
+            isInvalid[0] = true,
+            validationController.question.add("Please input the question")
+        }
+        : isInvalid[0] = false;
+
     //option A field
-    _optionAController.text.isEmpty ? isInvalid[1] = true : null;
+    _optionAController.text.isEmpty
+        ? {
+            isInvalid[1] = true,
+            validationController.optionA.add("Please input the option")
+          }
+        : {
+            isInvalid[1] = false,
+            validationController.optionA.remove("Please input the option")
+          };
+
+
     //option B field
-    _optionBController.text.isEmpty ? isInvalid[2] = true : null;
+    _optionBController.text.isEmpty
+        ? {
+            isInvalid[2] = true,
+            validationController.optionB.add("Please input the option")
+          }
+        : {
+            isInvalid[2] = false,
+            validationController.optionB.remove("Please input the option")
+          };
     //option C field
-    _optionCController.text.isEmpty ? isInvalid[3] = true : null;
+    _optionCController.text.isEmpty
+        ? {
+            isInvalid[3] = true,
+            validationController.optionC.add("Please input the option")
+          }
+        : {
+            isInvalid[3] = false,
+            validationController.optionC.remove("Please input the option")
+          };
+
     //option D field
-    _optionDController.text.isEmpty ? isInvalid[4] = true : null;
+    _optionDController.text.isEmpty
+        ? {
+            isInvalid[4] = true,
+            validationController.optionD.add("Please input the option")
+          }
+        : {
+            isInvalid[4] = false,
+            validationController.optionD.remove("Please input the option")
+          };
 
     setState(() {
       for(int i=0;i<isInvalid.length;i++){
@@ -119,22 +174,29 @@ class _NormalQuestionState extends State<NormalQuestion> {
     return _isChecked.contains(true);
   }
 
-  FutureBuilder<QuestionResponse> buildFutureBuilder(){
-    return FutureBuilder<QuestionResponse>(
+  FutureBuilder<AddQuestionResponse> buildFutureBuilder(){
+    return FutureBuilder<AddQuestionResponse>(
         future: _futureQuestionResponse,
         builder: (context, snapshot){
           if(snapshot.hasData){
-            return const Text('success');
+            //return const Text('success');
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              validationController.isSucceed = true;
+              Get.offAll(() => const MainPage());
+            });
           } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
+            //return Text('${snapshot.error}');
+            validationController.optionA.add(snapshot.data!.data.optionA);
+            validationController.optionB.add(snapshot.data!.data.optionB);
+            validationController.optionC.add(snapshot.data!.data.optionC);
+            validationController.optionD.add(snapshot.data!.data.optionD);
           }
           return const CircularProgressIndicator();
         }
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Column buildAddQuestionFrom(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -151,9 +213,9 @@ class _NormalQuestionState extends State<NormalQuestion> {
           child: TextField(
             controller: _questionController,
             decoration: InputDecoration(
-                labelText: "Question",
-                errorText: _isInvalid[0] ? "Please input the question!" : null,
-                border: const OutlineInputBorder(),
+              labelText: "Question",
+              errorText: _isInvalid[0] ? validationController.stringQuestion : null,
+              border: const OutlineInputBorder(),
             ),
             maxLines: null,
           ),
@@ -169,6 +231,7 @@ class _NormalQuestionState extends State<NormalQuestion> {
           title: 'Option A',
           isEmpty: _isInvalid[1],
           isUncheckedAll: _isUncheckedAll,
+          errorMessage: validationController.stringOptionA,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -180,6 +243,7 @@ class _NormalQuestionState extends State<NormalQuestion> {
           title: 'Option B',
           isEmpty: _isInvalid[2],
           isUncheckedAll: _isUncheckedAll,
+          errorMessage: validationController.stringOptionB,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -191,6 +255,7 @@ class _NormalQuestionState extends State<NormalQuestion> {
           title: 'Option C',
           isEmpty: _isInvalid[3],
           isUncheckedAll: _isUncheckedAll,
+          errorMessage: validationController.stringOptionC,
         ),
         const SizedBox(height: 10,),
         Option(
@@ -202,12 +267,13 @@ class _NormalQuestionState extends State<NormalQuestion> {
           title: 'Option D',
           isEmpty: _isInvalid[4],
           isUncheckedAll: _isUncheckedAll,
+          errorMessage: validationController.stringOptionD,
         ),
         const SizedBox(height: 15),
         const Padding(
           padding: EdgeInsets.only(right: 100),
           child: Text(
-              "*notes : please check one of the boxes as correct answer",
+            "*notes : please check one of the boxes as correct answer",
             style: TextStyle(fontSize: 10,color: Colors.grey),
           ),
         ),
@@ -216,7 +282,6 @@ class _NormalQuestionState extends State<NormalQuestion> {
             onPressed: () {
               if(_validationField()==false&&_validationCheckbox()==true){
                 setState(() {
-                  username = spController.username!;
                   _futureQuestionResponse = ApiService().createQuestion(
                     username,
                     _questionController.text,
@@ -233,6 +298,14 @@ class _NormalQuestionState extends State<NormalQuestion> {
             child: const Text("ADD QUESTION")
         ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: (_futureQuestionResponse == null)
+          ? buildAddQuestionFrom() : buildFutureBuilder(),
     );
   }
 }

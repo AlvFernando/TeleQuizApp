@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/image_question.dart';
 import 'package:Telematers_Quiz/widget/normal_question.dart';
+import 'package:get/get.dart';
+import '../util/add_quiz_validation_controller.dart';
 import '../widget/custom_purple.dart';
 
 
@@ -18,6 +20,7 @@ class _AddQuestionState extends State<AddQuestion> {
     const Text('Normal'),
     const Text('Image')
   ];
+  AddQuizValidationController validationController = Get.find();
 
   //alert dialog to prevent miss click back button
   Future<bool?> _showDialog(BuildContext context){
@@ -40,6 +43,8 @@ class _AddQuestionState extends State<AddQuestion> {
             ),
             TextButton(
               onPressed: (){
+                //function to reset the validation message
+                validationController.clearValidation();
                 Navigator.pop(context, true);
               },
               child: const Text('Ok'),

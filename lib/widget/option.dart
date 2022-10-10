@@ -7,6 +7,7 @@ class Option extends StatelessWidget {
   final String title;
   final bool isEmpty;
   final bool isUncheckedAll;
+  final String errorMessage;
 
   const Option({
     Key? key,
@@ -16,6 +17,7 @@ class Option extends StatelessWidget {
     required this.title,
     required this.isEmpty,
     required this.isUncheckedAll,
+    required this.errorMessage,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class Option extends StatelessWidget {
             controller: optionController,
             decoration: InputDecoration(
               hintText: title,
-              errorText: isEmpty ? "Please input $title field!" : null,
+              errorText: (errorMessage.isNotEmpty) ? errorMessage : null,
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
