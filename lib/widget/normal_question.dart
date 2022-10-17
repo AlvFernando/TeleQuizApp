@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/option.dart';
 import 'package:get/get.dart';
 import 'package:Telematers_Quiz/api/api_service.dart';
+import '../ui/add_question_page.dart';
 import '../ui/main_page.dart';
 import '../util/add_quiz_validation_controller.dart';
 
@@ -101,11 +102,12 @@ class _NormalQuestionState extends State<NormalQuestion> {
     _optionAController.text.isEmpty
         ? {
             isInvalid[1] = true,
-            validationController.optionA.add("Please input the option")
+            (!validationController.optionA.contains("Please input the option")) ?
+            validationController.optionA.add("Please input the option") : null
           }
         : {
             isInvalid[1] = false,
-            validationController.optionA.remove("Please input the option")
+            validationController.optionA = []
           };
 
 
@@ -113,32 +115,35 @@ class _NormalQuestionState extends State<NormalQuestion> {
     _optionBController.text.isEmpty
         ? {
             isInvalid[2] = true,
-            validationController.optionB.add("Please input the option")
+            (!validationController.optionB.contains("Please input the option")) ?
+            validationController.optionB.add("Please input the option") : null
           }
         : {
             isInvalid[2] = false,
-            validationController.optionB.remove("Please input the option")
+            validationController.optionB = []
           };
     //option C field
     _optionCController.text.isEmpty
         ? {
             isInvalid[3] = true,
-            validationController.optionC.add("Please input the option")
+            (!validationController.optionC.contains("Please input the option")) ?
+            validationController.optionC.add("Please input the option") : null
           }
         : {
             isInvalid[3] = false,
-            validationController.optionC.remove("Please input the option")
+            validationController.optionC = []
           };
 
     //option D field
     _optionDController.text.isEmpty
         ? {
             isInvalid[4] = true,
-            validationController.optionD.add("Please input the option")
+            (!validationController.optionD.contains("Please input the option")) ?
+            validationController.optionD.add("Please input the option") : null
           }
         : {
             isInvalid[4] = false,
-            validationController.optionD.remove("Please input the option")
+            validationController.optionD = []
           };
 
     setState(() {
@@ -180,16 +185,29 @@ class _NormalQuestionState extends State<NormalQuestion> {
         builder: (context, snapshot){
           if(snapshot.hasData){
             //return const Text('success');
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              validationController.isSucceed = true;
-              Get.offAll(() => const MainPage());
-            });
+            if(snapshot.data!.message == 'data created successfully'){
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                validationController.isSucceed = true;
+                Get.offAll(() => const MainPage());
+              });
+            }else{
+              validationController.question.add(snapshot.data!.data.question[0]);
+              validationController.question.add(snapshot.data!.data.question[1]);
+              validationController.optionA.add(snapshot.data!.data.optionA);
+              validationController.optionB.add(snapshot.data!.data.optionB);
+              validationController.optionC.add(snapshot.data!.data.optionC);
+              validationController.optionD.add(snapshot.data!.data.optionD);
+
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                //Get.off(() => const AddQuestion());
+                Navigator.push(context,MaterialPageRoute(builder: (context) =>AddQuestion()));
+                //udah bener, tinggal rapihin code
+                //perlu perbaiki return page nya
+                //dan sedikit rapihin message nya
+              });
+            }
           } else if (snapshot.hasError) {
-            //return Text('${snapshot.error}');
-            validationController.optionA.add(snapshot.data!.data.optionA);
-            validationController.optionB.add(snapshot.data!.data.optionB);
-            validationController.optionC.add(snapshot.data!.data.optionC);
-            validationController.optionD.add(snapshot.data!.data.optionD);
+            return Text('${snapshot.error}');
           }
           return const CircularProgressIndicator();
         }
@@ -214,7 +232,7 @@ class _NormalQuestionState extends State<NormalQuestion> {
             controller: _questionController,
             decoration: InputDecoration(
               labelText: "Question",
-              errorText: _isInvalid[0] ? validationController.stringQuestion : null,
+              errorText: (validationController.stringQuestion.isNotEmpty) ? validationController.stringQuestion : null,
               border: const OutlineInputBorder(),
             ),
             maxLines: null,

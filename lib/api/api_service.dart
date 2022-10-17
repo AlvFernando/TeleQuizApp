@@ -75,10 +75,11 @@ class ApiService{
       }),
     );
 
-    if(response.statusCode == 201){
+    if(response.statusCode == 201 ||response.statusCode == 400 ||response.statusCode == 500){
       return AddQuestionResponse.fromJson(jsonDecode(response.body));
     }else{
       throw Exception('Failed to send quiz question data. ${response.statusCode}');
+      //return AddQuestionResponse.fromJson(jsonDecode(response.body));
     }
   }
 }

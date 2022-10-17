@@ -1,3 +1,4 @@
+import 'package:Telematers_Quiz/widget/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Telematers_Quiz/util/music_player.dart';
@@ -5,7 +6,6 @@ import 'package:Telematers_Quiz/ui/add_question_page.dart';
 import 'package:Telematers_Quiz/ui/profile_page.dart';
 import 'package:Telematers_Quiz/ui/quiz_page.dart';
 import 'package:Telematers_Quiz/ui/setting_page.dart';
-import 'package:Telematers_Quiz/widget/app_button.dart';
 import 'package:Telematers_Quiz/widget/pic_mode.dart';
 import '../util/add_quiz_validation_controller.dart';
 import '../util/background_music_controller.dart';
@@ -139,26 +139,35 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
               ),
               Column(
                 children: [
+                  const SizedBox(height: 5,),
                   AppButton(
                     inputText: "Play",
-                    inputNavigation: () {
+                    onTap: (){
                       Get.to(() => const QuizPage());
                     },
-                    inputColor: const Color.fromARGB(255, 108, 21, 207),
+                    inputImage: 'IMAGE2',
+                    top: 17,
+                    right: 20,
                   ),
+                  const SizedBox(height: 20,),
                   AppButton(
                     inputText: "LeaderBoard",
-                    inputNavigation: () {
+                    onTap: (){
                       Get.to(() => const PictureMode());
                     },
-                    inputColor: const Color.fromARGB(255, 108, 21, 207),
+                    inputImage: 'IMAGE3',
+                    top: 0,
+                    right: 15,
                   ),
+                  const SizedBox(height: 20,),
                   AppButton(
                     inputText: "Add Question",
-                    inputNavigation: () {
+                    onTap: (){
                       Get.to(() => const AddQuestion());
                     },
-                    inputColor: const Color.fromARGB(255, 108, 21, 207),
+                    inputImage: 'IMAGE4',
+                    top: 15,
+                    right: 13,
                   ),
                 ],
               ),
