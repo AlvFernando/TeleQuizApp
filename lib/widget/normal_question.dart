@@ -94,7 +94,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
     _questionController.text.isEmpty
         ? {
             isInvalid[0] = true,
-            validationController.question.add("Please input the question")
+            (!validationController.question.contains("Please input the question")) ?
+            validationController.question.add("Please input the question") : null
         }
         : isInvalid[0] = false;
 
@@ -184,7 +185,6 @@ class _NormalQuestionState extends State<NormalQuestion> {
         future: _futureQuestionResponse,
         builder: (context, snapshot){
           if(snapshot.hasData){
-            //return const Text('success');
             if(snapshot.data!.message == 'data created successfully'){
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 validationController.isSucceed = true;
@@ -199,11 +199,7 @@ class _NormalQuestionState extends State<NormalQuestion> {
               validationController.optionD.add(snapshot.data!.data.optionD);
 
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                //Get.off(() => const AddQuestion());
-                Navigator.push(context,MaterialPageRoute(builder: (context) =>AddQuestion()));
-                //udah bener, tinggal rapihin code
-                //perlu perbaiki return page nya
-                //dan sedikit rapihin message nya
+                Get.off(() => const AddQuestion());
               });
             }
           } else if (snapshot.hasError) {
@@ -232,7 +228,8 @@ class _NormalQuestionState extends State<NormalQuestion> {
             controller: _questionController,
             decoration: InputDecoration(
               labelText: "Question",
-              errorText: (validationController.stringQuestion.isNotEmpty) ? validationController.stringQuestion : null,
+              errorText: (validationController.stringQuestion.isNotEmpty)
+                  ? validationController.stringQuestion : null,
               border: const OutlineInputBorder(),
             ),
             maxLines: null,

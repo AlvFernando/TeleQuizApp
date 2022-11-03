@@ -3,7 +3,9 @@ import 'package:Telematers_Quiz/model/add_question_response.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:Telematers_Quiz/model/user.dart';
+import '../model/leaderboard.dart';
 import '../model/profile.dart';
+import '../model/quiz.dart';
 
 class ApiService{
   static final String? _baseUrl = dotenv.env['API_BASE_URL'];
@@ -80,6 +82,47 @@ class ApiService{
     }else{
       throw Exception('Failed to send quiz question data. ${response.statusCode}');
       //return AddQuestionResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  //get data (leaderboard)
+  Future<Leaderboard>leaderboard() async{
+    Leaderboard leaderboard;
+    final response = await http.post(
+      Uri.parse('${_baseUrl}leaderboard'),
+      headers: <String,String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String,String>{
+        'key' : _apiKey!,
+      }),
+    );
+    if(response.statusCode == 200){
+      leaderboard = Leaderboard.fromJson(jsonDecode(response.body));
+      return leaderboard;
+    }else {
+      throw Exception('Failed to get profile data.');
+    }
+  }
+
+  //get data (quiz)
+  Future<Quiz>quiz(String userTypeId) async{
+    Quiz quiz;
+    final response = await http.post(
+      Uri.parse('${_baseUrl}quiz'),
+      headers: <String,String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String,String>{
+        'key' : _apiKey!,
+        'userTypeId' : userTypeId
+      }),
+    );
+    if(response.statusCode == 200){
+      quiz = Quiz.fromJson(jsonDecode(response.body));
+      return quiz;
+    }else {
+      throw Exception('Failed to get quiz data.');
     }
   }
 }

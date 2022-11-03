@@ -1,4 +1,5 @@
 import 'package:Telematers_Quiz/util/add_quiz_validation_controller.dart';
+import 'package:Telematers_Quiz/util/quiz_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Telematers_Quiz/ui/login_page.dart';
@@ -21,6 +22,7 @@ void main() async{
   Get.put(BackgroundMusicController());
   Get.put(SharedPreferencesController());
   Get.put(AddQuizValidationController());
+  Get.put(QuizController());
   runApp(const MyApp());
 }
 
