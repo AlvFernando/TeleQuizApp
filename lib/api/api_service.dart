@@ -21,8 +21,8 @@ class ApiService{
       },
       body: jsonEncode(<String,String>{
         'key' : _apiKey!,
-        'username': username,
-        'password': password
+        'username': 'Demo',
+        'password': 'Demo'
       }),
     );
     if(response.statusCode == 200){
