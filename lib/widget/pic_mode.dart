@@ -12,7 +12,7 @@ class PictureMode extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const HomeButton(),
+            HomeButton(),
             Container(
               margin: const EdgeInsets.all(10),
               child: Container(

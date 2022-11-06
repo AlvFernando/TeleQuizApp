@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/text_mode_choice.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../util/quiz_controller.dart';
 
@@ -13,6 +12,7 @@ class TextMode extends StatelessWidget {
   final String isFinish;
   final bool isPrev;
   final int questionIndex;
+  final String correctAnswer;
 
   TextMode(
       {
@@ -23,10 +23,19 @@ class TextMode extends StatelessWidget {
         required this.onPressedNext,
         required this.isFinish,
         required this.isPrev,
-        required this.questionIndex
+        required this.questionIndex,
+        required this.correctAnswer
       }) : super(key: key);
 
   final QuizController quizController = Get.find();
+
+  void updateAnswer(String answer,int index){
+    if(correctAnswer==answer){
+      quizController.setUserAnswer(true, index);
+    }else{
+      quizController.setUserAnswer(false, index);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +57,7 @@ class TextMode extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(question,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 20,
@@ -61,41 +70,45 @@ class TextMode extends StatelessWidget {
                   TextModeChoice(
                     multipleChoice: arrOptions[0],
                     onTap: (){
+                      updateAnswer(arrOptions[0],questionIndex);
                       quizController.quizUpdateState(questionIndex, 0);
                     },
                     color: (quizController.quizState[questionIndex][0])
                         ? Colors.orangeAccent
-                        : Color.fromARGB(255, 108, 21, 207),
+                        : const Color.fromARGB(255, 108, 21, 207),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextModeChoice(
                     multipleChoice: arrOptions[1],
                     onTap: (){
+                      updateAnswer(arrOptions[1],questionIndex);
                       quizController.quizUpdateState(questionIndex, 1);
                     },
                     color: (quizController.quizState[questionIndex][1])
                         ? Colors.orangeAccent
-                        : Color.fromARGB(255, 108, 21, 207),
+                        : const Color.fromARGB(255, 108, 21, 207),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextModeChoice(
                     multipleChoice: arrOptions[2],
                     onTap: (){
+                      updateAnswer(arrOptions[2],questionIndex);
                       quizController.quizUpdateState(questionIndex, 2);
                     },
                     color: (quizController.quizState[questionIndex][2])
                         ? Colors.orangeAccent
-                        : Color.fromARGB(255, 108, 21, 207),
+                        : const Color.fromARGB(255, 108, 21, 207),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextModeChoice(
                     multipleChoice: arrOptions[3],
                     onTap: (){
+                      updateAnswer(arrOptions[3],questionIndex);
                       quizController.quizUpdateState(questionIndex, 3);
                     },
                     color: (quizController.quizState[questionIndex][3])
                         ? Colors.orangeAccent
-                        : Color.fromARGB(255, 108, 21, 207),
+                        : const Color.fromARGB(255, 108, 21, 207),
                   ),
                 ],
               ),
@@ -106,8 +119,8 @@ class TextMode extends StatelessWidget {
                 (!isPrev) ?
                 ElevatedButton(
                     onPressed: onPressedPrev,
-                    child: Text('Prev')
-                ) : SizedBox(),
+                    child: const Text('Prev')
+                ) : const SizedBox(),
                 ElevatedButton(
                     onPressed: onPressedNext,
                     child: Text(isFinish)

@@ -1,13 +1,21 @@
 import 'package:get/get.dart';
 
 class QuizController extends GetxController{
-  List<List<bool>> _quizState = [
+   List<List<bool>> _quizState = [
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
   ];
+
+  List<bool> _userAnswer = [false,false,false,false,false];
+
+  List<bool> get userAnswer => _userAnswer;
+
+  void setUserAnswer(bool flag, int index) {
+    _userAnswer[index] = flag;
+  }
 
   List<List<bool>> get quizState => _quizState;
 
@@ -17,5 +25,16 @@ class QuizController extends GetxController{
             : _quizState[question][i]=false;
         update();
     }
+  }
+
+  void reset(){
+    _quizState = [
+      [false,false,false,false],
+      [false,false,false,false],
+      [false,false,false,false],
+      [false,false,false,false],
+      [false,false,false,false],
+    ];
+    _userAnswer = [false,false,false,false,false];
   }
 }

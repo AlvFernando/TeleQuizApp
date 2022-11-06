@@ -1,31 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:Telematers_Quiz/widget/home_button.dart';
+import 'package:get/get.dart';
+import '../util/quiz_controller.dart';
+import '../widget/custom_purple.dart';
+import 'package:countup/countup.dart';
 
 class ScorePage extends StatelessWidget {
-  const ScorePage({Key? key}) : super(key: key);
+  ScorePage({Key? key}) : super(key: key);
+
+  final QuizController quizController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    var score = quizController.userAnswer.where(
+            (element) => element==true).length /5 * 100;
     return Scaffold(
-      appBar: AppBar(title: const Text("Score Page")),
-      body: Center(
+      appBar: AppBar(title: const Text("Score")),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30,bottom: 30),
+        child: Center(
           child: Column(
-        children: [
-          const HomeButton(),
-          const Text("Your Score"),
-          Container(
-            width: 200,
-            height: 200,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green[100]),
-            child: const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "100",
-                  style: TextStyle(fontSize: 25),
-                )),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  const Text(
+                    'Your Score is',
+                    style: TextStyle(
+                        fontSize: 30
+                    ),
+                  ),
+                  const SizedBox(height: 20,),
+                  CircleAvatar(
+                    radius: 110,
+                    backgroundColor: CustomPurple.kToDark,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 100,
+                      child: Countup(
+                        begin: 0,
+                        end: score,
+                        duration: const Duration(seconds: 4),
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              HomeButton()
+            ],
           ),
-        ],
-      )),
+        ),
+      ),
     );
   }
 }

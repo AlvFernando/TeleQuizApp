@@ -143,7 +143,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                   AppButton(
                     inputText: "Play",
                     onTap: (){
-                      Get.to(() => QuizPage());
+                      Get.to(() => const QuizPage());
                     },
                     inputImage: 'IMAGE2',
                     top: 17,

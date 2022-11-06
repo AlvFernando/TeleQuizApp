@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: CustomPurple.kToDark.withOpacity(0.8),
                       borderRadius: const BorderRadius.all(Radius.circular(10.0))),
                   child: const Center(
-                    child: Text("Invalid Login Data Goblok !",
+                    child: Text("Invalid Login Data",
                       style: TextStyle(fontSize: 22, color: Colors.white),
                       textAlign: TextAlign.center,),
                   )) : null,

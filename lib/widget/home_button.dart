@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../ui/main_page.dart';
+import '../util/quiz_controller.dart';
 
 class HomeButton extends StatelessWidget {
-  const HomeButton({Key? key}) : super(key: key);
+  HomeButton({Key? key}) : super(key: key);
+  final QuizController quizController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: const Alignment(-1.0, -0.9),
-      child: ElevatedButton.icon(
-        onPressed: () {
-          //Get.to(() => const MainPage());
-          Navigator.pop(context);
-        },
-        icon: const Icon(Icons.home),
-        label: const Text(""),
-      ),
+    return ElevatedButton.icon(
+      onPressed: () {
+        quizController.reset();
+        Get.offAll(() => const MainPage());
+      },
+      icon: const Icon(Icons.home),
+      label: const Text("Main Menu"),
     );
   }
 }

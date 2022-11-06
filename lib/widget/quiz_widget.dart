@@ -1,7 +1,9 @@
+import 'package:Telematers_Quiz/ui/score_page.dart';
 import 'package:Telematers_Quiz/widget/text_mode.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../model/quiz.dart';
+
 
 class QuizWidget extends StatefulWidget {
   final List<Datum> data;
@@ -53,7 +55,7 @@ class _QuizWidgetState extends State<QuizWidget> {
               ),
               child: const Text('Ok'),
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.offAll(ScorePage());
               },
             ),
           ],
@@ -66,7 +68,7 @@ class _QuizWidgetState extends State<QuizWidget> {
   Widget build(BuildContext context) {
     return PageView(
       controller: _pageController,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         for(int i=0;i<widget.data.length;i++)
           TextMode(
@@ -100,6 +102,7 @@ class _QuizWidgetState extends State<QuizWidget> {
             isFinish: (i+1>=widget.data.length) ? 'Submit' : 'Next',
             isPrev: (i==0) ? true : false,
             questionIndex: i,
+            correctAnswer: widget.data[i].correctAnswer,
           )
       ],
     );
